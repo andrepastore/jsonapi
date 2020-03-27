@@ -277,6 +277,11 @@ func visitModelNode(model interface{}, included *map[string]*Node,
 			}
 
 			node.Type = args[1]
+		} else if annotation == "typeField" {
+			nodeType := fieldValue.String()
+			if nodeType != "" {
+				node.Type = nodeType
+			}
 		} else if annotation == annotationClientID {
 			clientID := fieldValue.String()
 			if clientID != "" {
