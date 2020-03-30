@@ -204,7 +204,7 @@ func visitModelNode(model interface{}, included *map[string]*Node,
 
 	modelValue := value.Elem()
 	modelType := value.Type().Elem()
-
+	valueForNodeType := ""
 	for i := 0; i < modelValue.NumField(); i++ {
 		structField := modelValue.Type().Field(i)
 		tag := structField.Tag.Get(annotationJSONAPI)
@@ -276,11 +276,11 @@ func visitModelNode(model interface{}, included *map[string]*Node,
 				break
 			}
 
-			node.Type = args[1]
+			valueForNodeType = args[1]
 		} else if annotation == "typeField" {
 			nodeType := fieldValue.String()
 			if nodeType != "" {
-				node.Type = nodeType
+				valueForNodeType = nodeType
 			}
 		} else if annotation == annotationClientID {
 			clientID := fieldValue.String()
@@ -452,6 +452,7 @@ func visitModelNode(model interface{}, included *map[string]*Node,
 			break
 		}
 	}
+	node.Type = valueForNodeType
 
 	if er != nil {
 		return nil, er

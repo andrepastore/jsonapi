@@ -150,6 +150,8 @@ func unmarshalNode(data *Node, model reflect.Value, included *map[string]*Node) 
 	modelType := modelValue.Type()
 
 	var er error
+	var hasCustomTypeField = true
+	var typeTag = ""
 
 	for i := 0; i < modelValue.NumField(); i++ {
 		fieldType := modelType.Field(i)
@@ -175,19 +177,11 @@ func unmarshalNode(data *Node, model reflect.Value, included *map[string]*Node) 
 		}
 
 		if annotation == annotationPrimary {
+			typeTag = args[1]
+
 			if data.ID == "" {
 				continue
 			}
-
-			// // Check the JSON API Type
-			// if data.Type != args[1] {
-			// 	er = fmt.Errorf(
-			// 		"Trying to Unmarshal an object of type %#v, but %#v does not match",
-			// 		data.Type,
-			// 		args[1],
-			// 	)
-			// 	break
-			// }
 
 			// ID will have to be transmitted as astring per the JSON API spec
 			v := reflect.ValueOf(data.ID)
@@ -231,6 +225,7 @@ func unmarshalNode(data *Node, model reflect.Value, included *map[string]*Node) 
 				continue
 			}
 
+			hasCustomTypeField = true
 			fieldValue.Set(reflect.ValueOf(data.Type))
 		} else if annotation == annotationClientID {
 			if data.ClientID == "" {
@@ -333,6 +328,15 @@ func unmarshalNode(data *Node, model reflect.Value, included *map[string]*Node) 
 		} else {
 			er = fmt.Errorf(unsupportedStructTagMsg, annotation)
 		}
+	}
+
+	// Check the JSON API Type
+	if data.Type != "" && data.Type != typeTag && !hasCustomTypeField && er == nil {
+		er = fmt.Errorf(
+			"Trying to Unmarshal an object of type %#v, but %#v does not match",
+			data.Type,
+			typeTag,
+		)
 	}
 
 	return er
