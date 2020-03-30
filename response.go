@@ -277,7 +277,7 @@ func visitModelNode(model interface{}, included *map[string]*Node,
 			}
 
 			valueForNodeType = args[1]
-		} else if annotation == "typeField" {
+		} else if annotation == annotationType {
 			nodeType := fieldValue.String()
 			if nodeType != "" {
 				valueForNodeType = nodeType

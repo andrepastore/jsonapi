@@ -220,7 +220,7 @@ func unmarshalNode(data *Node, model reflect.Value, included *map[string]*Node) 
 			}
 
 			assign(fieldValue, idValue)
-		} else if annotation == "typeField" {
+		} else if annotation == annotationType {
 			if data.Type == "" {
 				continue
 			}
