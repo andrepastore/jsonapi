@@ -188,7 +188,7 @@ func unmarshalNode(data *Node, model reflect.Value, included *map[string]*Node) 
 	modelType := modelValue.Type()
 
 	var er error
-	var hasCustomTypeField = true
+	var hasCustomTypeField = false
 	var typeTag = ""
 
 	for i := 0; i < modelValue.NumField(); i++ {

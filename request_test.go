@@ -73,7 +73,7 @@ func TestUnmarshalToStructWithPointerAttr(t *testing.T) {
 func TestUnmarshalPayload_ptrsAllNil(t *testing.T) {
 	out := new(WithPointer)
 	if err := UnmarshalPayload(
-		strings.NewReader(`{"data": {}}`), out); err != nil {
+		strings.NewReader(`{"data": {"type" : "with-pointers"}}`), out); err != nil {
 		t.Fatalf("Error unmarshalling to Foo")
 	}
 
