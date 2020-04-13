@@ -369,7 +369,7 @@ func unmarshalNode(data *Node, model reflect.Value, included *map[string]*Node) 
 	}
 
 	// Check the JSON API Type
-	if data.Type != "" && data.Type != typeTag && !hasCustomTypeField && er == nil {
+	if data.Type != typeTag && !hasCustomTypeField && er == nil {
 		er = fmt.Errorf(
 			"Trying to Unmarshal an object of type %#v, but %#v does not match",
 			data.Type,
